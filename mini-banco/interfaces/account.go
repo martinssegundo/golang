@@ -4,5 +4,5 @@ import "mini-banco/entities"
 
 type Account interface {
 	NoticeTranasaction(newTransaction entities.Transaction)
-	Total()
+	Total() float64
 }

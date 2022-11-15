@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	entities "mini-banco/entities"
@@ -32,14 +33,30 @@ func main() {
 	}
 
 	adicionaTransacao(newAccount, *transactionPointer)
+
+	transactionPointer = &entities.Transaction{
+		CreateDate:      time.Now(),
+		Amount:          -1000,
+		ReceiverAccount: "1",
+		SenderAccount:   "2",
+	}
+
+	adicionaTransacao(newAccount, *transactionPointer)
 	total(newAccount)
 
 }
 
 func adicionaTransacao(account interfaces.Account, transaction entities.Transaction) {
+	defer recoverBalanceLessZero()
 	account.NoticeTranasaction(transaction)
 }
 
 func total(accoun interfaces.Account) {
-	accoun.Total()
+	fmt.Printf("Total %f", accoun.Total())
+}
+
+func recoverBalanceLessZero() {
+	if r := recover(); r != nil {
+		println("Sua conta não pode ser negativa")
+	}
 }
