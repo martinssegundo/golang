@@ -1,8 +1,12 @@
 package db
 
-import entities "mini-bank/internal/domain/entities"
+import (
+	entities "mini-bank/internal/adapters/secundaries/db/db-impl"
+	domain "mini-bank/internal/domain/entities"
+)
 
-type BDAccount[T any] interface {
-	Dboperater[T]
-	findLast30DayTransactions(accountID int) []entities.Transaction
+type BDAccount interface {
+	save(account entities.AccountEntity) int
+	update(account entities.AccountEntity) int
+	findLast30DayTransactions(accountID int) []domain.Transaction
 }
